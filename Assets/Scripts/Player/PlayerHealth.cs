@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int startingHealth = 100;
+    public int startingHealth = 50;
     public int currentHealth;
     public Slider healthSlider;
     public Image damageImage;
@@ -19,6 +19,7 @@ public class PlayerHealth : MonoBehaviour
     AudioSource playerAudio;
     PlayerMovement playerMovement;
     PlayerShooting playerShooting;
+    PlayerAgent playerAgent;
     bool isDead;
     bool damaged;
 
@@ -29,6 +30,7 @@ public class PlayerHealth : MonoBehaviour
         playerAudio = GetComponent <AudioSource> ();
         playerMovement = GetComponent <PlayerMovement> ();
         playerShooting = GetComponentInChildren <PlayerShooting> ();
+        playerAgent = GetComponent<PlayerAgent>();
         currentHealth = startingHealth;
     }
 
@@ -50,6 +52,8 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage (int amount)
     {
         damaged = true;
+        // Decrease reward for getting damage
+        playerAgent.updateReward(-1);
 
         currentHealth -= amount;
 
@@ -67,6 +71,9 @@ public class PlayerHealth : MonoBehaviour
     void Death ()
     {
         isDead = true;
+        // Decrease reward for death
+        playerAgent.updateReward(-1);
+        playerAgent.GameOver();
 
         playerShooting.DisableEffects ();
 
@@ -77,6 +84,7 @@ public class PlayerHealth : MonoBehaviour
 
         playerMovement.enabled = false;
         playerShooting.enabled = false;
+        playerAgent.enabled = false;
     }
 
 
@@ -84,4 +92,5 @@ public class PlayerHealth : MonoBehaviour
     {
         SceneManager.LoadScene (0);
     }
+
 }

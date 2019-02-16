@@ -16,6 +16,9 @@ public class EnemyHealth : MonoBehaviour
     bool isDead;
     bool isSinking;
 
+    GameObject player;
+    PlayerAgent playerAgent;
+
 
     void Awake ()
     {
@@ -25,6 +28,9 @@ public class EnemyHealth : MonoBehaviour
         capsuleCollider = GetComponent <CapsuleCollider> ();
 
         currentHealth = startingHealth;
+
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerAgent = player.GetComponent<PlayerAgent>();
     }
 
 
@@ -60,6 +66,8 @@ public class EnemyHealth : MonoBehaviour
     {
         isDead = true;
 
+        //Increase reward for killing enemy
+        playerAgent.updateReward(1);
         capsuleCollider.isTrigger = true;
 
         anim.SetTrigger ("Dead");

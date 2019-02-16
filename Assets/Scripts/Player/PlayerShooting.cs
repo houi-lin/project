@@ -17,6 +17,9 @@ public class PlayerShooting : MonoBehaviour
     Light gunLight;
     float effectsDisplayTime = 0.2f;
 
+    GameObject player;
+    PlayerAgent playerAgent;
+
 
     void Awake ()
     {
@@ -25,14 +28,20 @@ public class PlayerShooting : MonoBehaviour
         gunLine = GetComponent <LineRenderer> ();
         gunAudio = GetComponent<AudioSource> ();
         gunLight = GetComponent<Light> ();
+
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerAgent = player.GetComponent<PlayerAgent>();
+        //Debug.Log(playerAgent.isShoot);
     }
 
 
     void Update ()
     {
+        //Debug.Log("PlayerShooting");
         timer += Time.deltaTime;
 
-		if(Input.GetButton ("Fire1") && timer >= timeBetweenBullets && Time.timeScale != 0)
+    // Get shoot action from player agent
+		if((Input.GetButton ("Fire1") || playerAgent.isShoot) && timer >= timeBetweenBullets && Time.timeScale != 0)
         {
             Shoot ();
         }
@@ -74,12 +83,17 @@ public class PlayerShooting : MonoBehaviour
             if(enemyHealth != null)
             {
                 enemyHealth.TakeDamage (damagePerShot, shootHit.point);
+                // Increase reward for hitting an enemy
+                playerAgent.updateReward(1);
             }
+            //else playerAgent.updateReward(-1); //Might lead to always no shoot
             gunLine.SetPosition (1, shootHit.point);
+            
         }
         else
         {
             gunLine.SetPosition (1, shootRay.origin + shootRay.direction * range);
+            playerAgent.updateReward(-1);
         }
     }
 }

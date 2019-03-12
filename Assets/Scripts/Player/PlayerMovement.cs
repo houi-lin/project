@@ -20,22 +20,20 @@ public class PlayerMovement : MonoBehaviour
         floorMask = LayerMask.GetMask("Floor");
         anim = GetComponent<Animator>();
         playerRigidbody = GetComponent<Rigidbody>();
-        
-        //Get PlayerAgent object
+        //playerRigidbody.position
         player = GameObject.FindGameObjectWithTag("Player");
         playerAgent = player.GetComponent<PlayerAgent>();
     }
 
     void FixedUpdate()
     {
-        /* mark original code
+        //Debug.Log("PlayerMovement");
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
-        */
-
-        // Get the move from player agent
-        float h = playerAgent.h;
-        float v = playerAgent.v;
+        //Debug.Log("[PlayerMovement] h = " + h);
+        //Debug.Log("[PlayerMovement] v = " + v);
+        h = playerAgent.h;
+        v = playerAgent.v;
 
         bool walking = h != 0f || v != 0f;
         if (walking) Move(h, v);
@@ -66,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
             Quaternion newRotation = Quaternion.LookRotation(playerToMouse);
             */
 
-            // Get the orientation from player agent 
+            //PlayAgent orientation
             Quaternion newRotation = playerAgent.newRotation;
 
             playerRigidbody.MoveRotation(newRotation);
@@ -77,5 +75,11 @@ public class PlayerMovement : MonoBehaviour
     {
         bool walking = h != 0f || v != 0f;
         anim.SetBool("IsWalking", walking);
+    }
+
+    void OnCollisionStay(Collision collisionInfo)
+    {
+        if (collisionInfo.transform.name != "Floor") { }
+            //print("[OnCollisionStay] collisionInfo= " + collisionInfo.transform.name);
     }
 }

@@ -51,8 +51,8 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage (int amount)
     {
+        //print("TakeDamage");
         damaged = true;
-        // Decrease reward for getting damage
         playerAgent.updateReward(-1);
 
         currentHealth -= amount;
@@ -71,8 +71,6 @@ public class PlayerHealth : MonoBehaviour
     void Death ()
     {
         isDead = true;
-        // Decrease reward for death
-        playerAgent.updateReward(-1);
         playerAgent.GameOver();
 
         playerShooting.DisableEffects ();
@@ -85,6 +83,12 @@ public class PlayerHealth : MonoBehaviour
         playerMovement.enabled = false;
         playerShooting.enabled = false;
         playerAgent.enabled = false;
+    }
+
+    public void killAllEnemy()
+    {
+        currentHealth = 0;
+        TakeDamage(0);
     }
 
 

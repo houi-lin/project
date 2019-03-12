@@ -66,8 +66,6 @@ public class EnemyHealth : MonoBehaviour
     {
         isDead = true;
 
-        //Increase reward for killing enemy
-        playerAgent.updateReward(1);
         capsuleCollider.isTrigger = true;
 
         anim.SetTrigger ("Dead");
@@ -83,6 +81,7 @@ public class EnemyHealth : MonoBehaviour
         GetComponent <Rigidbody> ().isKinematic = true;
         isSinking = true;
         ScoreManager.score += scoreValue;
+        playerAgent.numberOfKilled += 1;
         Destroy (gameObject, 2f);
     }
 }

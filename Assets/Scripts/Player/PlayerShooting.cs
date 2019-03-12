@@ -40,7 +40,6 @@ public class PlayerShooting : MonoBehaviour
         //Debug.Log("PlayerShooting");
         timer += Time.deltaTime;
 
-    // Get shoot action from player agent
 		if((Input.GetButton ("Fire1") || playerAgent.isShoot) && timer >= timeBetweenBullets && Time.timeScale != 0)
         {
             Shoot ();
@@ -83,7 +82,6 @@ public class PlayerShooting : MonoBehaviour
             if(enemyHealth != null)
             {
                 enemyHealth.TakeDamage (damagePerShot, shootHit.point);
-                // Increase reward for hitting an enemy
                 playerAgent.updateReward(1);
             }
             //else playerAgent.updateReward(-1); //Might lead to always no shoot
@@ -93,7 +91,7 @@ public class PlayerShooting : MonoBehaviour
         else
         {
             gunLine.SetPosition (1, shootRay.origin + shootRay.direction * range);
-            playerAgent.updateReward(-1);
+            //playerAgent.updateReward(-1);
         }
     }
 }
